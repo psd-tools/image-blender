@@ -1,0 +1,32 @@
+# Python-specific:
+### byte-compiled code
+__pycache__/
+
+### distribution / packaging
+/dist/
+/image_blender.egg-info/
+
+
+# Cython-specific:
+### annotated code
+/src/*.html
+
+
+# Windows-specific:
+### folder metadata
+[Dd]esktop.ini
+
+
+# Linux-specific:
+### temporary editor files
+*~
+
+### KDE directory metadata
+.directory
+
+
+# macOS-specific:
+### file / folder metadata
+.DS_Store
+.LSOverride
+Icon[]

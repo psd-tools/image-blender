@@ -1,0 +1,53 @@
+This page contains a list of various debugging tools which come with this
+project. You can find them in debugging_tools_ folder.
+
+.. _debugging_tools: ../tree/master/debugging_tools
+
+Image Blend tool
+----------------
+Blends two images together (``active.png`` and ``background.png`` from images_
+subfolder) using specified blend function and saves the resulting image as
+``result.png`` (or under user-specified name).
+::
+
+  Usage: image_blend.py <func_name> [<save_as=result>]
+         NOTE: All file names are relative to "images" dir!
+
+.. _images: ../tree/master/debugging_tools/images
+
+Deviation Info tool
+-------------------
+Calculates deviation stats and generates deviation maps.
+::
+
+  Usage: deviation_info.py <ethalon_image> <result_image> [<map_base_name> | -v (R|G|B|A)]
+         NOTE: All file names are relative to "images" dir!
+
+  Options:
+      -v (R|G|B|A), --verbose (R|G|B|A)   Print verbose information about deviations for specified channel.
+
+The tool takes two images to be compared. There are two working modes: standard
+and verbose.
+
+In standard mode the tool calculates a per-channel difference between the
+images and adds it up with a gray background. Difference in luminance is
+calculated as well. After that a color stats for each deviation map is
+collected and printed into a console.
+
+Optionally these deviation maps can be saved as images by specifying
+``<map_base_name>`` as a third parameter. Before saving deviations amplified
+for greater visibility. Deviations of color channels are saved as
+``<map_base_name>.png``. Deviations of alpha channel are saved as
+``<map_base_name>.alpha.png``. Deviations in luminance are saved as
+``<map_base_name>.lum.png``.
+
+In verbose mode verbose information about mismatch points for specified channel
+is printed into a console.
+
+Performance Test tool
+---------------------
+Measures the time elapsed on running certain (or all) blend function certain
+amount of times.
+::
+
+  Usage: perf_test.py <func_name|all> [<pass_count=1000>]

@@ -1,0 +1,138 @@
+This page contains a complete list of blend modes and formulas behind them.
+
+Variables in formulas below have the following meaning:
+
+* A, B ─ colors
+* a, b ─ color components
+* A ─ pixel color from active (top) layer
+* B ─ pixel color from background layer
+
+=============  =============  =======================
+  Mode name    Function name          Formula
+=============  =============  =======================
+\                  **Normal group**
+-----------------------------------------------------
+Dissolve       dissolve       |Dissolve formula|
+\                  **Darken group**
+-----------------------------------------------------
+Darken         darken         |Darken formula|
+Multiply       multiply       |Multiply formula|
+Color Burn     color_burn     |Color Burn formula|
+Linear Burn    linear_burn    |Linear Burn formula|
+Darker Color   darker_color   |Darker Color formula|
+\                 **Lighten group**
+-----------------------------------------------------
+Lighten        lighten        |Lighten formula|
+Screen         screen         |Screen formula|
+Color Dodge    color_dodge    |Color Dodge formula|
+Linear Dodge   linear_dodge   |Linear Dodge formula|
+Lighter Color  lighter_color  |Lighter Color formula|
+\                 **Contrast group**
+-----------------------------------------------------
+Overlay        overlay        |Overlay formula|
+Soft Light     soft_light     |Soft Light formula|
+Hard Light     hard_light     |Hard Light formula|
+Vivid Light    vivid_light    |Vivid Light formula|
+Linear Light   linear_light   |Linear Light formula|
+Pin Light      pin_light      |Pin Light formula|
+Hard Mix       hard_mix       |Hard Mix formula|
+\                **Inversion group**
+-----------------------------------------------------
+Difference     difference     |Difference formula|
+Exclusion      exclusion      |Exclusion formula|
+\               **Cancellation group**
+-----------------------------------------------------
+Subtract       subtract       |Subtract formula|
+Divide         divide         |Divide formula|
+\                **Component group**
+-----------------------------------------------------
+Hue            hue            |Hue formula|
+Saturation     saturation     |Saturation formula|
+Color          color          |Color formula|
+Luminosity     luminosity     |Luminosity formula|
+=============  =============  =======================
+
+.. Normal group:
+.. |Dissolve formula| image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28A%2C%20B%29%20%3D%20%5Cbegin%7Bcases%7D%20B%20%26%20%5Ctext%7B%20if%20%7D%20A_a%20%3C%20%28rand%28%29%20%5Cbmod%20255%29%20&plus;%201%20%5C%5C%20%5BA_%7Brgb%7D%2C%5C%2C%20255%5D%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D
+                      :alt: f(A, B) = B if A['A'] < (rand() % 255) + 1 else (A['RGB'], 255)
+
+.. Darken group:
+.. |Darken formula|       image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cmin%28a%2C%20b%29
+                          :alt: f(a, b) = min(a, b)
+
+.. |Multiply formula|     image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cfrac%7Ba%5C%21*%5C%21b%7D%7B255%7D
+                          :alt: f(a, b) = a*b / 255
+
+.. |Color Burn formula|   image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cbegin%7Bcases%7D%20255%20%26%20%5Ctext%7B%20if%20%7D%20b%20%3D%20255%20%5C%5C%200%20%26%20%5Ctext%7B%20if%20%7D%20a%20%3D%200%20%5C%5C%20%5Cmax%280%2C%5C%2C%20255%20-%20%5Cfrac%7B%28255%5C%3B%20-%5C%3B%20b%29*255%7D%7Ba%7D%29%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D
+                          :alt: f(a, b) = max(0, 255 - (255 - b)*255 / (1 if a == 0 else a))
+
+.. |Linear Burn formula|  image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cmax%280%2C%5C%2C%20a%20&plus;%20b%20-%20255%29
+                          :alt: f(a, b) = max(0, a + b - 255)
+
+.. |Darker Color formula| image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28A%2C%20B%29%20%3D%20%5Cbegin%7Bcases%7D%20A%20%26%20%5Ctext%7B%20if%20%7D%20lum%28A%29%20%3C%20lum%28B%29%20%5C%5C%20B%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D
+                          :alt: f(A, B) = A if lum(A) < lum(B) else B
+
+.. Lighten group:
+.. |Lighten formula|       image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cmax%28a%2C%20b%29
+                           :alt: f(a, b) = max(a, b)
+
+.. |Screen formula|        image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20255%20-%20%5Cfrac%7B%28255%20-%20a%29%5C%21*%5C%21%28255%20-%20b%29%7D%7B255%7D%20%3D%20a%20&plus;%20b%20-%20%5Cfrac%7Ba%5C%21*%5C%21b%7D%7B255%7D
+                           :alt: f(a, b) = 255 - (255 - a)*(255 - b) / 255 = a + b - a*b / 255
+
+.. |Color Dodge formula|   image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cbegin%7Bcases%7D%200%20%26%20%5Ctext%7B%20if%20%7D%20b%20%3D%200%20%5C%5C%20255%20%26%20%5Ctext%7B%20if%20%7D%20a%20%3D%20255%20%5C%5C%20%5Cmin%28255%2C%5C%2C%20%5Cfrac%7Bb*255%7D%7B255%5C%3B%20-%5C%3B%20a%7D%29%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D
+                           :alt: f(a, b) = min(255, b*255 / (1 if a == 255 else (255 - a)))
+
+.. |Linear Dodge formula|  image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cmin%28255%2C%5C%2C%20a%20&plus;%20b%29
+                           :alt: f(a, b) = min(255, a + b)
+
+.. |Lighter Color formula| image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28A%2C%20B%29%20%3D%20%5Cbegin%7Bcases%7D%20A%20%26%20%5Ctext%7B%20if%20%7D%20lum%28A%29%20%3E%20lum%28B%29%20%5C%5C%20B%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D
+                           :alt: f(A, B) = A if lum(A) > lum(B) else B
+
+.. Contrast group:
+.. |Overlay formula|      image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cbegin%7Bcases%7D%20multiply%28a%2C%5C%2C%202%5C%21*%5C%21b%29%20%26%20%5Ctext%7B%20if%20%7D%20b%20%3C%20128%20%5C%5C%20screen%28a%2C%5C%2C%202%5C%21*%5C%21b%20-%20255%29%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D
+                          :alt: f(a, b) = multiply(a, 2*b) if b < 128 else screen(a, 2*b - 255)
+
+.. |Soft Light formula|   image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cbegin%7Bcases%7D%20b%20-%20%5Cfrac%7B%28255%5C%3B%20-%5C%3B%202*a%29*b*%28255%5C%3B%20-%5C%3B%20b%29%7D%7B255%5E2%7D%20%26%20%5Ctext%7B%20if%20%7D%20a%20%3C%20128%20%5C%5C%20b%20&plus;%20%5Cfrac%7B%282*a%5C%3B%20-%5C%3B%20255%29*%28D%28b%29%5C%3B%20-%5C%3B%20b%29%7D%7B255%7D%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D%2C%20%5C%5C%5B1em%5D%20%5Ctext%7Bwhere%20%7D%20D%28x%29%20%3D%20%5Cbegin%7Bcases%7D%20%5Cfrac%7B%28%2816*x%5C%3B%20-%5C%3B%2012*255%29*x%5C%3B%20&plus;%5C%3B%204*255%5E2%29*x%7D%7B255%5E2%7D%20%26%20%5Ctext%7B%20if%20%7D%20x%20%3C%2064%20%5C%5C%20%5Csqrt%7Bx%5C%21*%5C%21255%7D%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D
+                          :alt: Too complex to represent as a single line
+
+.. |Hard Light formula|   image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20overlay%28b%2C%20a%29%20%3D%20%5Cbegin%7Bcases%7D%20multiply%28b%2C%5C%2C%202%5C%21*%5C%21a%29%20%26%20%5Ctext%7B%20if%20%7D%20a%20%3C%20128%20%5C%5C%20screen%28b%2C%5C%2C%202%5C%21*%5C%21a%20-%20255%29%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D
+                          :alt: f(a, b) = overlay(b, a) = multiply(b, 2*a) if a < 128 else screen(b, 2*a - 255)
+
+.. |Vivid Light formula|  image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cbegin%7Bcases%7D%20color%5C%21%5C_burn%282%5C%21*%5C%21a%2C%5C%2C%20b%29%20%26%20%5Ctext%7B%20if%20%7D%20a%20%3C%20128%20%5C%5C%20color%5C%21%5C_dodge%282%5C%21*%5C%21a%20-%20255%2C%5C%3B%20b%29%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D
+                          :alt: f(a, b) = color_burn(2*a, b) if a < 128 else color_dodge(2*a - 255, b)
+
+.. |Linear Light formula| image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cbegin%7Bcases%7D%20linear%5C%21%5C_burn%282%5C%21*%5C%21a%2C%5C%2C%20b%29%20%26%20%5Ctext%7B%20if%20%7D%20a%20%3C%20128%20%5C%5C%20linear%5C%21%5C_dodge%282%5C%21*%5C%21a%20-%20255%2C%5C%3B%20b%29%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D
+                          :alt: f(a, b) = linear_burn(2*a, b) if a < 128 else linear_dodge(2*a - 255, b)
+
+.. |Pin Light formula|    image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cbegin%7Bcases%7D%20darken%282%5C%21*%5C%21a%2C%5C%2C%20b%29%20%26%20%5Ctext%7B%20if%20%7D%20a%20%3C%20128%20%5C%5C%20lighten%282%5C%21*%5C%21a%20-%20255%2C%5C%3B%20b%29%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D
+                          :alt: f(a, b) = darken(2*a, b) if a < 128 else lighten(2*a - 255, b)
+
+.. |Hard Mix formula|     image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cbegin%7Bcases%7D%200%20%26%20%5Ctext%7B%20if%20%7D%20a%20&plus;%20b%20%3C%20255%20%5C%5C%20255%20%26%20%5Ctext%7B%20if%20%7D%20a%20&plus;%20b%20%3E%20255%20%5C%5C%20g%28a%29%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D%2C%5C%3B%5C%3B%20g%28x%29%20%3D%20%5Cbegin%7Bcases%7D%20255%20%26%20%5Ctext%7B%20if%20%7D%20x%20%3C%20128%20%5C%5C%200%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D
+                          :alt: Too complex to represent as a single line
+
+.. Inversion group:
+.. |Difference formula| image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%7Cb%20-%20a%7C
+                        :alt: f(a, b) = |b - a|
+
+.. |Exclusion formula|  image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20a%20&plus;%20b%20-%20%5Cfrac%7B2%5C%21*%5C%21a%5C%21*%5C%21b%7D%7B255%7D
+                        :alt: f(a, b) = a + b - 2*a*b / 255
+
+.. Cancellation group:
+.. |Subtract formula| image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cmax%280%2C%5C%2C%20b%20-%20a%29
+                      :alt: f(a, b) = max(0, b - a)
+
+.. |Divide formula|   image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28a%2C%20b%29%20%3D%20%5Cbegin%7Bcases%7D%200%20%26%20%5Ctext%7B%20if%20%7D%20b%20%3D%200%20%5C%5C%20255%20%26%20%5Ctext%7B%20if%20%7D%20a%20%3D%200%20%5C%5C%20%5Cmin%28255%2C%5C%2C%20%5Cfrac%7Bb*255%7D%7Ba%7D%29%20%26%20%5Ctext%7B%20else%7D%20%5Cend%7Bcases%7D
+                      :alt: f(a, b) = min(255, b*255 / (1 if a == 0 else a))
+
+.. Component group:
+.. |Hue formula|        image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28A%2C%20B%29%20%3D%20set%5C%21%5C_lum%28set%5C%21%5C_sat%28A%2C%5C%2C%20sat%28B%29%29%2C%5C%2C%20lum%28B%29%29
+                        :alt: f(A, B) = set_lum(set_sat(A, sat(B)), lum(B))
+
+.. |Saturation formula| image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28A%2C%20B%29%20%3D%20set%5C%21%5C_lum%28set%5C%21%5C_sat%28B%2C%5C%2C%20sat%28A%29%29%2C%5C%2C%20lum%28B%29%29
+                        :alt: f(A, B) = set_lum(set_sat(B, sat(A)), lum(B))
+
+.. |Color formula|      image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28A%2C%20B%29%20%3D%20set%5C%21%5C_lum%28A%2C%5C%2C%20lum%28B%29%29
+                        :alt: f(A, B) = set_lum(A, lum(B))
+
+.. |Luminosity formula| image:: http://latex.codecogs.com/gif.latex?%5Clarge%20f%28A%2C%20B%29%20%3D%20set%5C%21%5C_lum%28B%2C%5C%2C%20lum%28A%29%29
+                        :alt: f(A, B) = set_lum(B, lum(A))

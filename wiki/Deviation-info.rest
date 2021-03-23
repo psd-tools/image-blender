@@ -1,0 +1,51 @@
+This page contains information about deviations of each blend mode from its
+Photoshop implementation.
+
+=============  =========================  ======================
+Function name  Maximum deviation [#dev]_  Photoshop bug? [#bug]_
+=============  =========================  ======================
+\                   **Normal group**
+----------------------------------------------------------------
+dissolve       Deviations approach        No
+               normal distribution
+\                   **Darken group**
+----------------------------------------------------------------
+darken         0                          No
+multiply       0                          No
+color_burn     0                          No
+linear_burn    0                          No
+darker_color   0                          Yes
+\                  **Lighten group**
+----------------------------------------------------------------
+lighten        0                          No
+screen         0                          No
+color_dodge    0                          No
+linear_dodge   0                          No
+lighter_color  0                          Yes
+\                  **Contrast group**
+----------------------------------------------------------------
+overlay        0                          No
+soft_light     ±1 color tone              No
+hard_light     0                          Yes
+vivid_light    +2 color tones             Yes
+linear_light   0                          Yes
+pin_light      +1 color tone              No
+hard_mix       0                          No
+\                 **Inversion group**
+----------------------------------------------------------------
+difference     0                          No
+exclusion      ±1 color tone              No
+\                **Cancellation group**
+----------------------------------------------------------------
+subtract       0                          No
+divide         0                          No
+\                 **Component group**
+----------------------------------------------------------------
+hue            ±2 luminance levels        Yes
+saturation     ±2 luminance levels        Yes
+color          ±2 luminance levels        Yes
+luminosity     ±2 luminance levels        Yes
+=============  =========================  ======================
+
+.. [#dev] Deviations caused by Photoshop's bugs are not accounted.
+.. [#bug] Take a look at the sources for more information.
