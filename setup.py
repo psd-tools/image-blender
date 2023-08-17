@@ -123,7 +123,7 @@ def main():
 
     setup_args = dict(
         name = 'image-blender',
-        version = '0.1.0',
+        version = '0.1.1',
         author = 'Evgeny Kopylov',
         url = 'https://github.com/psd-tools/image-blender',
 

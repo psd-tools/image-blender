@@ -2,7 +2,7 @@
 
 """Python extension which provides a fast implementation of Adobe Photoshop's blend modes."""
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 from libc.stdlib cimport malloc, free, srand, rand
 from libc.math cimport sqrt
@@ -1206,7 +1206,7 @@ def divide(bytes imdata1, bytes imdata2):
 # ===========================   Component group   ============================
 # ============================================================================
 
-cdef short min(const Color *pcolor) nogil:
+cdef short min(const Color *pcolor) noexcept nogil:
     if pcolor.r <= pcolor.g:
         if pcolor.r <= pcolor.b:
             return pcolor.r
@@ -1216,7 +1216,7 @@ cdef short min(const Color *pcolor) nogil:
             return pcolor.g
         return pcolor.b
 
-cdef short max(const Color *pcolor) nogil:
+cdef short max(const Color *pcolor) noexcept nogil:
     if pcolor.r >= pcolor.g:
         if pcolor.r >= pcolor.b:
             return pcolor.r
@@ -1226,7 +1226,7 @@ cdef short max(const Color *pcolor) nogil:
             return pcolor.g
         return pcolor.b
 
-cdef void set_mmm(Color *pcolor, short **ppmin, short **ppmid, short **ppmax) nogil:
+cdef void set_mmm(Color *pcolor, short **ppmin, short **ppmid, short **ppmax) noexcept nogil:
     if pcolor.r <= pcolor.g:
         if pcolor.r <= pcolor.b:
             ppmin[0] = &pcolor.r
@@ -1254,21 +1254,21 @@ cdef void set_mmm(Color *pcolor, short **ppmin, short **ppmid, short **ppmax) no
             ppmid[0] = &pcolor.g
             ppmax[0] = &pcolor.r
 
-cdef inline UINT8 get_lum(const Color *pcolor) nogil:
+cdef inline UINT8 get_lum(const Color *pcolor) noexcept nogil:
     # color luminance according to YUV color space
 
     # Here Photoshop has something like a rounding error. This one fixes half of the deviations:
     #   return <UINT8>((30*pcolor.r/255.0 + 59*pcolor.g/255.0 + 11*pcolor.b/255.0) * 255 / 100 + 0.49999999999999)
     return ((30*pcolor.r + 59*pcolor.g + 11*pcolor.b + 51) * 0xA3D7) >> 22
 
-cdef inline Color* set_lum(Color *pcolor, UINT8 new_lum) nogil:
+cdef inline Color* set_lum(Color *pcolor, UINT8 new_lum) noexcept nogil:
     cdef short d = new_lum - get_lum(pcolor)
     pcolor.r += d
     pcolor.g += d
     pcolor.b += d
     return clip_color(pcolor)
 
-cdef inline Color* clip_color(Color *pcolor) nogil:
+cdef inline Color* clip_color(Color *pcolor) noexcept nogil:
     cdef UINT8 lum = get_lum(pcolor)
     cdef short n = min(pcolor)
     cdef short x = max(pcolor)
@@ -1325,10 +1325,10 @@ cdef inline Color* clip_color(Color *pcolor) nogil:
 
     return pcolor
 
-cdef inline UINT8 get_sat(const Color *pcolor) nogil:
+cdef inline UINT8 get_sat(const Color *pcolor) noexcept nogil:
     return max(pcolor) - min(pcolor)
 
-cdef inline Color* set_sat(Color *pcolor, UINT8 new_sat) nogil:
+cdef inline Color* set_sat(Color *pcolor, UINT8 new_sat) noexcept nogil:
     cdef UINT8 divisor, dividend
     cdef short *pmin = NULL
     cdef short *pmid = NULL

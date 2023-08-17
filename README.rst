@@ -122,6 +122,6 @@ alpha channel. Now let's go to the examples:
 
 License
 -------
-Copyright 2015-2021 Evgeny Kopylov. Licensed under the `MIT License`_.
+Copyright 2015-2023 Evgeny Kopylov. Licensed under the `MIT License`_.
 
 .. _`MIT License`: https://github.com/psd-tools/image-blender/blob/master/LICENSE.txt
